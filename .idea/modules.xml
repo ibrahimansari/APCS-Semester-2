@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/APCS-Semester-2.iml" filepath="$PROJECT_DIR$/APCS-Semester-2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Classwork/Classwork.iml" filepath="$PROJECT_DIR$/Classwork/Classwork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 17.0 QuadSorts/Lab 17.0 QuadSorts.iml" filepath="$PROJECT_DIR$/Lab 17.0 QuadSorts/Lab 17.0 QuadSorts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 18.1 Merge/Lab 18.1 Merge.iml" filepath="$PROJECT_DIR$/Lab 18.1 Merge/Lab 18.1 Merge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 19.1 Store/Lab 19.1 Store.iml" filepath="$PROJECT_DIR$/Lab 19.1 Store/Lab 19.1 Store.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 19.2 Search/Lab 19.2 Search.iml" filepath="$PROJECT_DIR$/Lab 19.2 Search/Lab 19.2 Search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 19.3 CountWords/Lab 19.3 CountWords.iml" filepath="$PROJECT_DIR$/Lab 19.3 CountWords/Lab 19.3 CountWords.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 20.1 Old MacDonald/Lab 20.1 Old MacDonald.iml" filepath="$PROJECT_DIR$/Lab 20.1 Old MacDonald/Lab 20.1 Old MacDonald.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 23.1 Life/Lab 23.1 Life.iml" filepath="$PROJECT_DIR$/Lab 23.1 Life/Lab 23.1 Life.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 23.2 Knight's Tour 1/Lab 23.2 Knight's Tour 1.iml" filepath="$PROJECT_DIR$/Lab 23.2 Knight's Tour 1/Lab 23.2 Knight's Tour 1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 23.3 Knight's Tour 2/Lab 23.3 Knight's Tour 2.iml" filepath="$PROJECT_DIR$/Lab 23.3 Knight's Tour 2/Lab 23.3 Knight's Tour 2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lab 24.1 EraseObject/Lab 24.1 EraseObject.iml" filepath="$PROJECT_DIR$/Lab 24.1 EraseObject/Lab 24.1 EraseObject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sorts/Sorts.iml" filepath="$PROJECT_DIR$/Sorts/Sorts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Test Space/Test Space.iml" filepath="$PROJECT_DIR$/Test Space/Test Space.iml" />
+    </modules>
+  </component>
+</project>
