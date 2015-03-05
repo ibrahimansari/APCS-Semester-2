@@ -1,4 +1,16 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
+/*
+Ibrahim Ansari
+Period 7
+2/20/2015
+
+ClassworkGUI
+
+Time Spent: 1 hour
+
+Reflection:
+This is incomplete. I had forgotten we had APCS homework. I am very sorry. I hurriedly finished how much I could.
+I was given a lot of time to do this but made a bad decision and saved it for the last moment. Sorry :(
+ */
 
 import javax.swing.*;
 import javax.swing.border.*;
