@@ -38,6 +38,8 @@ class MineGUI extends MouseAdapter implements ActionListener {
         JMenuItem totalMines = new JMenuItem("Total Mines");
         JMenuItem howTo = new JMenuItem("How To Play");
         JMenuItem about = new JMenuItem("About");
+        JTextField time = new JTextField("Time Elapsed: 0:00");
+        JTextField minesRemain = new JTextField("Mines Remaining: 9000");
 
         window.setJMenuBar(menuBar);
         menuBar.add(gameMenu);
@@ -58,6 +60,8 @@ class MineGUI extends MouseAdapter implements ActionListener {
         about.addActionListener(this);
 
         mainPanel.add(minePanel);
+        mainPanel.add(time);
+        mainPanel.add(minesRemain);
 
         window.getContentPane().add(mainPanel);
 
