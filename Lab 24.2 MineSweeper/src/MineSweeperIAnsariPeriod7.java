@@ -3,16 +3,12 @@ Ibrahim Ansari
 Period 7
 3/5/2015
 
-Minesweeper Rough Draft
+Minesweeper Version 1.0
 
-Time Spent: 1 hour
+Time Spent:
 
 Reflection:
-I have got a hard coded version that doesn't incorporate the recursive algorithm yet. I have got a rough GUI and the
-game itself works without the erasure. I have to find a way to erase with JButtons. I used JButtons thinking it would
-be easier. It does make it easier in a few ways, but I also see advantages to doing it on a single JPanel, because 
-drawing is much easier. I have some ideas planned for the recursive algorithm and how to incorporate it. I also have to
-make it dynamically change size and add a reset feature. I currently just exit the program on a game loss.
+
  */
 
 import java.awt.GridLayout;

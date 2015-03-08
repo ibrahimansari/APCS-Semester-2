@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fa1fbfe5-7c70-4e60-b1f4-52973d88d116" name="Default" comment="">
+    <list default="true" id="fa1fbfe5-7c70-4e60-b1f4-52973d88d116" name="Default" comment="moved to 10.10">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lab 24.2 MineSweeper/src/MineSweeperIAnsariPeriod7.java" afterPath="$PROJECT_DIR$/Lab 24.2 MineSweeper/src/MineSweeperIAnsariPeriod7.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="APCS-Semester-2.iws" />
@@ -42,10 +43,10 @@
       <file leaf-file-name="MineSweeperIAnsariPeriod7.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Lab 24.2 MineSweeper/src/MineSweeperIAnsariPeriod7.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7460733" vertical-offset="0" max-vertical-offset="2475">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.21596858" vertical-offset="0" max-vertical-offset="2415">
+              <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
               <folding>
-                <element signature="e#0#5001#0" expanded="true" />
+                <element signature="e#0#4417#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
@@ -620,7 +621,7 @@
       <workItem from="1425592328485" duration="1525000" />
       <workItem from="1425594640629" duration="1119000" />
       <workItem from="1425602566287" duration="4264000" />
-      <workItem from="1425777197247" duration="157000" />
+      <workItem from="1425777197247" duration="225000" />
     </task>
     <task id="LOCAL-00001" summary="Finished Lab 19.2 Search">
       <created>1421706357143</created>
@@ -754,11 +755,17 @@
       <option name="project" value="LOCAL" />
       <updated>1425777341705</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="moved to 10.10">
+      <created>1425777370223</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1425777370223</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="153418000" />
+    <option name="totallyTimeSpent" value="153486000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -782,7 +789,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-69" y="-993" width="1372" height="884" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -803,7 +810,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17593984" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="689" y="81" width="187" height="653" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17593984" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="689" y="81" width="187" height="653" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.62538224" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -862,7 +869,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="2475">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding>
-            <element signature="e#0#5001#0" expanded="true" />
+            <element signature="e#0#4417#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1164,10 +1171,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Lab 24.2 MineSweeper/src/MineSweeperIAnsariPeriod7.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7460733" vertical-offset="0" max-vertical-offset="2475">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.21596858" vertical-offset="0" max-vertical-offset="2415">
+          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
           <folding>
-            <element signature="e#0#5001#0" expanded="true" />
+            <element signature="e#0#4417#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
