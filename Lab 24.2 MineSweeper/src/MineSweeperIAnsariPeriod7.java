@@ -1,159 +1,428 @@
 /*
 Ibrahim Ansari
 Period 7
-3/5/2015
+3/8/2015
 
 Minesweeper Version 1.0
 
-Time Spent:
+Time Spent: 2 hours
 
 Reflection:
 
  */
 
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Random;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.swing.*;
 
-public class MineSweeperIAnsariPeriod7 {
-    private static final int NUM_MINES = 20;
-    private static final int SIZE = 20;
+public class MineSweeperIAnsariPeriod7 extends JFrame {
+    private static final int EMPTY_CELL = 0;
+    private static final int MINE_CELL = 9;
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Mine Sweeper | # of mines left: " + NUM_MINES);
-        JMenuBar menuBar = new JMenuBar();
-        JMenu gameMenu = new JMenu("Game");
-        JMenu optionsMenu = new JMenu("Options");
-        JMenu helpMenu = new JMenu("Help");
-        JMenuItem newGame = new JMenuItem("New Game");
-        JMenuItem exit = new JMenuItem("Exit");
-        JMenuItem totalMines = new JMenuItem("Total Mines");
-        JMenuItem howTo = new JMenuItem("How To Play");
-        JMenuItem about = new JMenuItem("About");
+    private int gameSize;
+    private MineCell mineField[][];
+    private int mineAmount;
+    private int flagAmount;
+    private JLabel mineLeft;
+    private int unclickedCells = 0;
+    private int cellTotal;
 
-        frame.setJMenuBar(menuBar);
+    public static void main(String args[]) {
+        MineSweeperIAnsariPeriod7 minesweeper = new MineSweeperIAnsariPeriod7();
+    }
+
+    public MineSweeperIAnsariPeriod7() {
+        super("Ibrahim's MineSweeper");
+        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        gameSize = Integer.parseInt(JOptionPane.showInputDialog("Enter size of board", 20));
+        mineAmount  = Integer.parseInt(JOptionPane.showInputDialog("Enter amount of Mines", 20));
+
+        mineField = new MineCell[gameSize][gameSize];
+        // GUI stuff
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
+
+        JPanel mineFieldPanel = new JPanel();
+        mineFieldPanel.setLayout(new GridLayout(gameSize, gameSize));
+
+        CellMouseAdapter adapter = new CellMouseAdapter();
+        for (int row = 0; row < gameSize; row++) {
+            for (int col = 0; col < gameSize; col++) {
+                mineField[row][col] = new MineCell(row, col);
+                mineField[row][col].addMouseListener(adapter);
+                mineFieldPanel.add(mineField[row][col]);
+            }
+        }
+
+        createMenu();
+        mineLeft = new JLabel("  Mines Remaining: " + flagAmount);
+        newGame();
+
+        contentPane.add(mineLeft, BorderLayout.NORTH);
+        contentPane.add(mineFieldPanel, BorderLayout.CENTER);
+
+        setSize((gameSize * 20) - 20, (gameSize * 20) + 20);
+        setVisible(true);
+    }
+
+    private void newGame() {
+        for (int row = 0; row < gameSize; row++) {
+            for (int col = 0; col < gameSize; col++) {
+                mineField[row][col].clear();
+            }
+        }
+
+        placeMines();
+        assignClues();
+        unclickedCells = 0;
+        cellTotal = gameSize * gameSize;
+        flagAmount = mineAmount;
+        mineLeft.setText("  Mines Remaining: " + flagAmount);
+    }
+
+    private void createMenu() {
+        JMenuBar menuBar;
+        JMenu gameMenu, optionsMenu, helpMenu;
+        JMenuItem newItem, exitItem, aboutItem, howItem, totalItem;
+
+        menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+
+        gameMenu = new JMenu("Game");
+        optionsMenu = new JMenu("Options");
+        helpMenu = new JMenu("Help");
         menuBar.add(gameMenu);
         menuBar.add(optionsMenu);
         menuBar.add(helpMenu);
-        gameMenu.add(newGame);
-        gameMenu.add(exit);
-        optionsMenu.add(totalMines);
-        helpMenu.add(howTo);
-        helpMenu.add(about);
-        frame.add(new MineSweeperGUI(SIZE, SIZE, NUM_MINES));
-        frame.setSize(400, 400);
-        frame.setVisible(true);
-    }
-}
 
-class MineSweeperGUI extends JPanel {
-    private MineGrid grid;
+        newItem = new JMenuItem("New Game");
+        newItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        newGame();
+                    }
+                }
+        );
+        gameMenu.add(newItem);
 
-    public MineSweeperGUI(int numRows, int numCols, int numMines) {
-        grid = new MineGrid(numRows, numCols, numMines);
+        exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        System.exit(0);
+                    }
+                }
+        );
+        gameMenu.add(exitItem);
 
-        setLayout(new GridLayout(numRows, numCols));
-        for(int i = 0; i < numRows; i++) {
-            for(int j = 0; j < numCols; j++) {
-                JButton button = new JButton();
-                add(button);
-                button.addActionListener(new ButtonListener(i,j, grid));
-            }
-        }
-    }
-}
+        totalItem = new JMenuItem("Total Mines");
+        totalItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        mineAmount  = Integer.parseInt(JOptionPane.showInputDialog("Enter amount of Mines for New Game", 20));
+                        newGame();
+                    }
+                }
+        );
+        optionsMenu.add(totalItem);
 
-class ButtonListener implements ActionListener {
-    private int row, col;
-    private MineGrid grid;
+        aboutItem = new JMenuItem("About");
+        aboutItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            JEditorPane aboutContent = new JEditorPane(new URL("file:about.html"));
+                            JOptionPane.showMessageDialog(null, aboutContent, "How To Play", JOptionPane.PLAIN_MESSAGE, null);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+        );
+        helpMenu.add(aboutItem);
 
-    public ButtonListener(int x, int y, MineGrid g) {
-        row = x;
-        col = y;
-        grid = g;
-    }
-
-    public void actionPerformed(ActionEvent event) {
-        if(grid.mineAt(row, col)) {
-            JOptionPane.showMessageDialog(null, "Game Over!!");
-            System.exit(0);
-        } else {
-            JButton button = (JButton)event.getSource();
-            button.setText(String.valueOf(grid.getInfo(row, col)));
-        }
-    }
-}
-
-class MineGrid {
-    public static final int MINE = -1;
-    protected int[][] mineInfo;
-
-    public MineGrid(int numRows, int numCols, int numMines) {
-        mineInfo = new int[numRows][numCols];
-
-        initializeCells();
-        placeMines(numMines);
-        setMineInformation();
-    }
-
-    private void initializeCells() {
-        for(int i = 0; i < mineInfo.length; i++) {
-            for(int j = 0; j < mineInfo[0].length; j++) {
-                mineInfo[i][j] = 0;
-            }
-        }
+        howItem = new JMenuItem("How To Play");
+        howItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            JEditorPane helpContent = new JEditorPane(new URL("file:how.html"));
+                            JScrollPane helpPane = new JScrollPane(helpContent);
+                            JOptionPane.showMessageDialog(null, helpPane, "How To Play", JOptionPane.PLAIN_MESSAGE, null);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+        );
+        helpMenu.add(howItem);
     }
 
-    private void placeMines(int numMines) {
-        Random random = new Random();
-        for(int i = 0; i < numMines; i++) {
-            int r = random.nextInt(mineInfo.length);
-            int c = random.nextInt(mineInfo[0].length);
-            mineInfo[r][c] = MINE;
-        }
-    }
-
-    private void setMineInformation() {
-        for(int i = 0; i < mineInfo.length; i++) {
-            for(int j = 0; j < mineInfo[0].length; j++) {
-                if(mineInfo[i][j] == MINE) {
-                    // previous row
-                    incrementMine(i-1, j-1);
-                    incrementMine(i-1, j);
-                    incrementMine(i-1, j+1);
-
-                    // left and right cells
-                    incrementMine(i, j-1);
-                    incrementMine(i, j+1);
-
-                    // next row
-                    incrementMine(i+1, j-1);
-                    incrementMine(i+1, j);
-                    incrementMine(i+1, j+1);
+    private void revealBoard() {
+        for (int row = 0; row < gameSize; row++) {
+            for (int col = 0; col < gameSize; col++) {
+                mineField[row][col].setSelected(true);
+                if (mineField[row][col].clue() > EMPTY_CELL && mineField[row][col].clue() < MINE_CELL) {
+                    mineField[row][col].setText("" + mineField[row][col].clue());
                 }
             }
         }
     }
 
-    private void incrementMine(int i, int j) {
-        if(inBounds(i, j) && mineInfo[i][j] != MINE) {
-            mineInfo[i][j]++;
+    private void placeMines() {
+        int xPos, yPos;
+
+        for (int x = 0; x < mineAmount; ++x) {
+            xPos = (int) (Math.random() * gameSize);
+            yPos = (int) (Math.random() * gameSize);
+            // Check mine on a mine
+            while (mineField[yPos][xPos].clue() != 0) {
+                xPos = (int) (Math.random() * gameSize);
+                yPos = (int) (Math.random() * gameSize);
+            }
+            // Place mine
+            mineField[yPos][xPos].setClue(MINE_CELL);
+            mineField[yPos][xPos].setMine();
         }
     }
 
-    private boolean inBounds(int i, int j) {
-        return (i >= 0 && i < mineInfo.length) &&
-                (j >= 0 && j < mineInfo[0].length);
+    private void assignClues() {
+        for (int y = 0; y < gameSize; ++y) {
+            for (int x = 0; x < gameSize; ++x) {
+                // Ignore mine
+                if (mineField[y][x].clue() != MINE_CELL) {
+                    int clueCount = EMPTY_CELL;
+                    // check neighbors
+                    if ((x - 1 >= 0) &&
+                            (mineField[y][x - 1].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+                    if ((x + 1 < gameSize) &&
+                            (mineField[y][x + 1].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+                    if ((y - 1 >= 0) &&
+                            (mineField[y - 1][x].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+                    if ((y + 1 < gameSize) &&
+                            (mineField[y + 1][x].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+                    if ((y - 1 >= 0) && (x - 1 >= 0) &&
+                            (mineField[y - 1][x - 1].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+                    if ((y - 1 >= 0) && (x + 1 < gameSize) &&
+                            (mineField[y - 1][x + 1].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+                    if ((y + 1 < gameSize) && (x - 1 >= 0) &&
+                            (mineField[y + 1][x - 1].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+                    if ((y + 1 < gameSize) &&
+                            (x + 1 < gameSize) &&
+                            (mineField[y + 1][x + 1].clue() == MINE_CELL)) {
+                        ++clueCount;
+                    }
+
+                    mineField[y][x].setClue(clueCount);
+                }
+            }
+        }
     }
 
-    public int getInfo(int i, int j) {
-        return mineInfo[i][j];
+    private boolean outOfBounds(int yPos, int xPos) {
+        return ((xPos < 0) || (yPos < 0) || (xPos >= gameSize) || (yPos >= gameSize));
     }
 
-    public boolean mineAt(int i, int j) {
-        return getInfo(i, j) == MINE;
+    private void cellClick(int row, int col) {
+        if (outOfBounds(col, row)) {
+            return;
+        }
+
+        MineCell cell = mineField[row][col];
+        int clue = cell.clue();
+
+        if ((clue == MINE_CELL) || !cell.isCovered()) {
+            return;
+        }
+
+        cell.makeUncovered();
+        unclickedCells++;
+
+        if (clue != EMPTY_CELL) {
+            mineField[row][col].setText("" + clue);
+            this.repaint();
+            return;
+        }
+
+        this.repaint();
+
+        cellClick(row - 1, col);
+        cellClick(row - 1, col + 1);
+        cellClick(row, col + 1);
+        cellClick(row + 1, col + 1);
+        cellClick(row + 1, col);
+        cellClick(row + 1, col - 1);
+        cellClick(row, col - 1);
+        cellClick(row - 1, col - 1);
+    }
+
+    class CellMouseAdapter extends MouseAdapter {
+        public void mouseReleased(MouseEvent e) {
+            MineCell cell = (MineCell) e.getSource();
+            if ((e.getModifiers() & InputEvent.BUTTON3_MASK) == InputEvent.BUTTON3_MASK) {
+                if (cell.isCovered()) {
+                    if (!cell.isFlagged() && (flagAmount > 0)) {
+                        cell.makeFlagged(true);
+                        flagAmount--;
+                        mineLeft.setText("  Mines Remaining: " + flagAmount);
+                    } else {
+                        cell.makeFlagged(false);
+                        if (flagAmount < 20) {
+                            flagAmount++;
+                        }
+                        mineLeft.setText("  Mines Remaining: " + flagAmount);
+                    }
+                }
+            } else {
+                if (cell.isCovered()) {
+                    if (cell.clue() != EMPTY_CELL && cell.clue() != MINE_CELL) {
+                        cell.setText("" + cell.clue());
+                        cell.makeUncovered();
+                        unclickedCells++;
+                    } else
+                    if (cell.clue() == EMPTY_CELL) {
+                        cellClick(cell.row(), cell.col());
+                    } else {
+                        revealBoard();
+                        unclickedCells = -100;
+                        mineLeft.setText("  Y O U  L O S E !");
+                    }
+                }
+            }
+            if (mineAmount == cellTotal - unclickedCells) {
+                mineLeft.setText("  Y O U  W I N !");
+            }
+        }
     }
 }
 
+class MineCell extends JToggleButton {
+    static protected ImageIcon mineIcon, notSelectedIcon, selectedIcon, flagIcon;
+    static protected Font font;
+    private int row, col;
+    private int clue = 0;
+    private boolean flagged;
+    private boolean covered;
+
+    public MineCell(int r, int c) {
+        this.row = r;
+        this.col = c;
+
+        setHorizontalTextPosition(AbstractButton.CENTER);
+
+        setBorderPainted(false);
+        setMargin(new Insets(0, 0, 0, 0));
+
+        if (font == null) {
+            font = new Font("serif", Font.BOLD, 12);
+        }
+        setFont(font);
+
+        if (mineIcon == null) {
+            try {
+                mineIcon = new ImageIcon(new URL("file:mine.gif"));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (selectedIcon == null) {
+            try {
+                selectedIcon = new ImageIcon(new URL("file:selected.jpg"));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (notSelectedIcon == null) {
+            try {
+                notSelectedIcon = new ImageIcon(new URL("file:notSelected.png"));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (flagIcon == null) {
+            try {
+                flagIcon = new ImageIcon(new URL("file:flag.png"));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        setIcon(notSelectedIcon);
+        setSelectedIcon(selectedIcon);
+        this.flagged = false;
+        this.covered = true;
+    }
+
+    void setClue(int clueVal) {
+        this.clue = clueVal;
+    }
+
+    int clue() {
+        return this.clue;
+    }
+
+    void setMine() {
+        setSelectedIcon(mineIcon);
+    }
+
+    public boolean isCovered() {
+        return this.covered;
+    }
+
+    void makeUncovered() {
+        this.covered = false;
+        this.setIcon(selectedIcon);
+    }
+
+    void makeFlagged(boolean flag) {
+        this.flagged = flag;
+        if (flag) {
+            this.setIcon(flagIcon);
+        } else {
+            this.setIcon(notSelectedIcon);
+        }
+    }
+
+    boolean isFlagged() {
+        return flagged;
+    }
+
+    int row() {
+        return row;
+    }
+
+    int col() {
+        return col;
+    }
+
+    void clear() {
+        covered = true;
+        flagged = false;
+        setText("");
+        setClue(0);
+        setSelected(false);
+        setIcon(notSelectedIcon);
+        setSelectedIcon(selectedIcon);
+    }
+}
