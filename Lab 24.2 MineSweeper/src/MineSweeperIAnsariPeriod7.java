@@ -8,27 +8,28 @@ Minesweeper Version 1.0
 Time Spent: 2 hours
 
 Reflection:
-
+This was a fun lab. It was fun making a classic game in a Swing implementation. I enjoyed this lab. It wasn't even
+that hard. It was a mash-up of LifeGUI and EraseObject with some new things involved. I was stuck for a while on how
+to make it work with a single JPanel, but decided to instead to fill a JPanel up with JToggleButtons as that seemed
+like the best way for me. I had to make a Cell Class where I defined each cell to have Icons and other information.
+The recursive algorithm was a modified version of my EraseObject Lab. I also made the JFrame resize according to how
+big the user wanted the gam to be. My game can have any size and any number of mines. The user wins when they click
+all the non-mine cells. I plan to add auto-play and other graphical improvements.
  */
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import javax.swing.*;
 
 public class MineSweeperIAnsariPeriod7 extends JFrame {
-    private static final int EMPTY_CELL = 0;
-    private static final int MINE_CELL = 9;
+    private static final int EMPTY_CELL = 0, MINE_CELL = 9;
 
-    private int gameSize;
     private MineCell mineField[][];
-    private int mineAmount;
-    private int flagAmount;
-    private JLabel mineLeft;
-    private int unclickedCells = 0;
-    private int cellTotal;
+    private JLabel mineLeft, timeLabel;
+    private Timer timer;
+    private int gameSize, mineAmount, flagAmount, cellTotal, timeElapsed, unclickedCells = 0;
 
     public static void main(String args[]) {
         MineSweeperIAnsariPeriod7 minesweeper = new MineSweeperIAnsariPeriod7();
@@ -59,17 +60,32 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
         }
 
         createMenu();
+        JPanel top = new JPanel(new FlowLayout());
         mineLeft = new JLabel("  Mines Remaining: " + flagAmount);
+        timeLabel = new JLabel("  Time Elapsed: " + timeElapsed);
+        top.add(mineLeft);
+        top.add(timeLabel);
         newGame();
 
-        contentPane.add(mineLeft, BorderLayout.NORTH);
+        contentPane.add(top, BorderLayout.NORTH);
         contentPane.add(mineFieldPanel, BorderLayout.CENTER);
 
         setSize((gameSize * 20) - 20, (gameSize * 20) + 20);
+        // Cool way to center
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
     private void newGame() {
+        timeElapsed = 0;
+        timer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                timeElapsed++;
+                timeLabel.setText("  Time Elapsed: " + timeElapsed);
+            }
+        });
+        timer.start();
+
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
                 mineField[row][col].clear();
@@ -303,12 +319,15 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
                     } else {
                         revealBoard();
                         unclickedCells = -100;
-                        mineLeft.setText("  Y O U  L O S E !");
+                        mineLeft.setText("  Y O U    L O S E !");
+                        timer.stop();
                     }
                 }
             }
             if (mineAmount == cellTotal - unclickedCells) {
-                mineLeft.setText("  Y O U  W I N !");
+                mineLeft.setText("  Y O U    W I N !");
+                timer.stop();
+
             }
         }
     }
@@ -317,10 +336,8 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
 class MineCell extends JToggleButton {
     static protected ImageIcon mineIcon, notSelectedIcon, selectedIcon, flagIcon;
     static protected Font font;
-    private int row, col;
-    private int clue = 0;
-    private boolean flagged;
-    private boolean covered;
+    private int row, col, clue = 0;
+    private boolean flagged, covered;
 
     public MineCell(int r, int c) {
         this.row = r;
