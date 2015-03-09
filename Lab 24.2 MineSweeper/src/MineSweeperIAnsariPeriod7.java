@@ -152,7 +152,7 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             JEditorPane aboutContent = new JEditorPane(new URL("file:about.html"));
-                            JOptionPane.showMessageDialog(null, aboutContent, "How To Play", JOptionPane.PLAIN_MESSAGE, null);
+                            JOptionPane.showMessageDialog(null, aboutContent, "About", JOptionPane.PLAIN_MESSAGE, null);
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
