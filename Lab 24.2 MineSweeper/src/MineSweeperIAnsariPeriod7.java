@@ -1,22 +1,22 @@
 /*
 Ibrahim Ansari
 Period 7
-3/8/2015
+3/10/2015
 
-Minesweeper Version 1.0
+Minesweeper Version 2.0
 
-Time Spent: 2 hours
+Time Spent: 2 hours 45 minutes (in total)
 
 Reflection:
-This was a fun lab. It was fun making a classic game in a Swing implementation. I enjoyed this lab. It wasn't even
-that hard. It was a mash-up of LifeGUI and EraseObject with some new things involved. I was stuck for a while on how
-to make it work with a single JPanel, but decided to instead to fill a JPanel up with JToggleButtons as that seemed
-like the best way for me. I had to make a Cell Class where I defined each cell to have Icons and other information.
-The recursive algorithm was a modified version of my EraseObject Lab. I also made the JFrame resize according to how
-big the user wanted the gam to be. My game can have any size and any number of mines. The user wins when they click
-all the non-mine cells. I plan to add auto-play and other graphical improvements.
+In this version, I customized new Icons with PhotoShop and also added sound effects. I also fixed a bug with the
+flagging, so that the game now has clear grid lines so it is easier to see individual cells. I was planning on
+adding auto-play because I though that my graphical improvements were not enough, but I unfortunately didn't have
+enough time.
  */
 
+import sun.applet.AppletAudioClip;
+
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
     private MineCell mineField[][];
     private JLabel mineLeft, timeLabel;
     private Timer timer;
-    private int gameSize, mineAmount, flagAmount, cellTotal, timeElapsed, unclickedCells = 0;
+    private int gameSize, mineAmount, flagAmount, correctFlag, cellTotal, timeElapsed, unclickedCells = 0;
 
     public static void main(String args[]) {
         MineSweeperIAnsariPeriod7 minesweeper = new MineSweeperIAnsariPeriod7();
@@ -38,24 +38,31 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
     public MineSweeperIAnsariPeriod7() {
         super("Ibrahim's MineSweeper");
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super.setResizable(false);
 
         gameSize = Integer.parseInt(JOptionPane.showInputDialog("Enter size of board", 20));
-        mineAmount  = Integer.parseInt(JOptionPane.showInputDialog("Enter amount of Mines", 20));
+        mineAmount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount of Mines", 20));
 
         mineField = new MineCell[gameSize][gameSize];
         // GUI stuff
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        JPanel mineFieldPanel = new JPanel();
-        mineFieldPanel.setLayout(new GridLayout(gameSize, gameSize));
+        final JPanel minePanel = new JPanel();
+        minePanel.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                minePanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        });
+        minePanel.setLayout(new GridLayout(gameSize, gameSize));
 
         CellMouseAdapter adapter = new CellMouseAdapter();
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
                 mineField[row][col] = new MineCell(row, col);
                 mineField[row][col].addMouseListener(adapter);
-                mineFieldPanel.add(mineField[row][col]);
+                minePanel.add(mineField[row][col]);
             }
         }
 
@@ -68,7 +75,7 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
         newGame();
 
         contentPane.add(top, BorderLayout.NORTH);
-        contentPane.add(mineFieldPanel, BorderLayout.CENTER);
+        contentPane.add(minePanel, BorderLayout.CENTER);
 
         setSize((gameSize * 20) - 20, (gameSize * 20) + 20);
         // Cool way to center
@@ -78,6 +85,9 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
 
     private void newGame() {
         timeElapsed = 0;
+        // to avoid timer glitch after adjusting mine amount
+        if (timer != null)
+            timer.stop();
         timer = new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 timeElapsed++;
@@ -97,13 +107,14 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
         unclickedCells = 0;
         cellTotal = gameSize * gameSize;
         flagAmount = mineAmount;
+        correctFlag = 0;
         mineLeft.setText("  Mines Remaining: " + flagAmount);
     }
 
     private void createMenu() {
         JMenuBar menuBar;
         JMenu gameMenu, optionsMenu, helpMenu;
-        JMenuItem newItem, exitItem, aboutItem, howItem, totalItem;
+        JMenuItem newItem, exitItem, aboutItem, howItem, totalItem, autoItem;
 
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -139,12 +150,22 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
         totalItem.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        mineAmount  = Integer.parseInt(JOptionPane.showInputDialog("Enter amount of Mines for New Game", 20));
+                        mineAmount = Integer.parseInt(JOptionPane.showInputDialog("Enter amount of Mines for New Game", 20));
                         newGame();
                     }
                 }
         );
         optionsMenu.add(totalItem);
+
+        autoItem = new JMenuItem("AutoPlay");
+        autoItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        autoPlay();
+                    }
+                }
+        );
+        optionsMenu.add(autoItem);
 
         aboutItem = new JMenuItem("About");
         aboutItem.addActionListener(
@@ -187,6 +208,10 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
                 }
             }
         }
+    }
+
+    private void autoPlay() {
+
     }
 
     private void placeMines() {
@@ -258,16 +283,14 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
     }
 
     private void cellClick(int row, int col) {
-        if (outOfBounds(col, row)) {
+        if (outOfBounds(col, row))
             return;
-        }
 
         MineCell cell = mineField[row][col];
         int clue = cell.clue();
 
-        if ((clue == MINE_CELL) || !cell.isCovered()) {
+        if ((clue == MINE_CELL) || !cell.isCovered())
             return;
-        }
 
         cell.makeUncovered();
         unclickedCells++;
@@ -292,19 +315,35 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
 
     class CellMouseAdapter extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
+            try {
+                AudioClip click = new AppletAudioClip(new URL("file:click.wav"));
+                click.play();
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
             MineCell cell = (MineCell) e.getSource();
             if ((e.getModifiers() & InputEvent.BUTTON3_MASK) == InputEvent.BUTTON3_MASK) {
                 if (cell.isCovered()) {
                     if (!cell.isFlagged() && (flagAmount > 0)) {
+                        try {
+                            AudioClip flag = new AppletAudioClip(new URL("file:flag.wav"));
+                            flag.play();
+                        } catch (MalformedURLException e1) {
+                            e1.printStackTrace();
+                        }
                         cell.makeFlagged(true);
                         flagAmount--;
-                        mineLeft.setText("  Mines Remaining: " + flagAmount);
+                        mineLeft.setText("Mines Remaining: " + flagAmount);
+                        if (cell.isMine())
+                            correctFlag++;
                     } else {
                         cell.makeFlagged(false);
                         if (flagAmount < 20) {
                             flagAmount++;
                         }
-                        mineLeft.setText("  Mines Remaining: " + flagAmount);
+                        mineLeft.setText("Mines Remaining: " + flagAmount);
+                        if (cell.isMine())
+                            correctFlag--;
                     }
                 }
             } else {
@@ -313,19 +352,30 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
                         cell.setText("" + cell.clue());
                         cell.makeUncovered();
                         unclickedCells++;
-                    } else
-                    if (cell.clue() == EMPTY_CELL) {
+                    } else if (cell.clue() == EMPTY_CELL) {
                         cellClick(cell.row(), cell.col());
                     } else {
                         revealBoard();
                         unclickedCells = -100;
-                        mineLeft.setText("  Y O U    L O S E !");
+                        try {
+                            AudioClip lose = new AppletAudioClip(new URL("file:lose.wav"));
+                            lose.play();
+                        } catch (MalformedURLException e1) {
+                            e1.printStackTrace();
+                        }
+                        JOptionPane.showMessageDialog(null, "You lost the game!", "Sorry...", JOptionPane.PLAIN_MESSAGE);
                         timer.stop();
                     }
                 }
             }
-            if (mineAmount == cellTotal - unclickedCells) {
-                mineLeft.setText("  Y O U    W I N !");
+            if ((mineAmount == cellTotal - unclickedCells) && (mineAmount == correctFlag)) {
+                try {
+                    AudioClip win = new AppletAudioClip(new URL("file:win.wav"));
+                    win.play();
+                } catch (MalformedURLException e1) {
+                    e1.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(null, "You won the game!", "Congratulations!", JOptionPane.PLAIN_MESSAGE);
                 timer.stop();
 
             }
@@ -401,6 +451,13 @@ class MineCell extends JToggleButton {
 
     void setMine() {
         setSelectedIcon(mineIcon);
+    }
+
+    public boolean isMine() {
+        if (this.clue == 9)
+            return true;
+        else
+            return false;
     }
 
     public boolean isCovered() {
