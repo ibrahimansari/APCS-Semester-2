@@ -30,6 +30,7 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
     private JLabel mineLeft, timeLabel;
     private Timer timer;
     private int gameSize, mineAmount, flagAmount, correctFlag, cellTotal, timeElapsed, unclickedCells = 0;
+    private ClassLoader cl = this.getClass().getClassLoader();
 
     public static void main(String args[]) {
         MineSweeperIAnsariPeriod7 minesweeper = new MineSweeperIAnsariPeriod7();
@@ -172,7 +173,7 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            JEditorPane aboutContent = new JEditorPane(new URL("file:about.html"));
+                            JEditorPane aboutContent = new JEditorPane(cl.getResource("about.html"));
                             JOptionPane.showMessageDialog(null, aboutContent, "About", JOptionPane.PLAIN_MESSAGE, null);
                         } catch (IOException e1) {
                             e1.printStackTrace();
@@ -187,7 +188,7 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            JEditorPane helpContent = new JEditorPane(new URL("file:how.html"));
+                            JEditorPane helpContent = new JEditorPane(cl.getResource("how.html"));
                             JScrollPane helpPane = new JScrollPane(helpContent);
                             JOptionPane.showMessageDialog(null, helpPane, "How To Play", JOptionPane.PLAIN_MESSAGE, null);
                         } catch (IOException e1) {
@@ -315,22 +316,14 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
 
     class CellMouseAdapter extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            try {
-                AudioClip click = new AppletAudioClip(new URL("file:click.wav"));
-                click.play();
-            } catch (MalformedURLException e1) {
-                e1.printStackTrace();
-            }
+            AudioClip click = new AppletAudioClip(cl.getResource("click.wav"));
+            click.play();
             MineCell cell = (MineCell) e.getSource();
             if ((e.getModifiers() & InputEvent.BUTTON3_MASK) == InputEvent.BUTTON3_MASK) {
                 if (cell.isCovered()) {
                     if (!cell.isFlagged() && (flagAmount > 0)) {
-                        try {
-                            AudioClip flag = new AppletAudioClip(new URL("file:flag.wav"));
-                            flag.play();
-                        } catch (MalformedURLException e1) {
-                            e1.printStackTrace();
-                        }
+                        AudioClip flag = new AppletAudioClip(cl.getResource("flag.wav"));
+                        flag.play();
                         cell.makeFlagged(true);
                         flagAmount--;
                         mineLeft.setText("Mines Remaining: " + flagAmount);
@@ -357,24 +350,16 @@ public class MineSweeperIAnsariPeriod7 extends JFrame {
                     } else {
                         revealBoard();
                         unclickedCells = -100;
-                        try {
-                            AudioClip lose = new AppletAudioClip(new URL("file:lose.wav"));
-                            lose.play();
-                        } catch (MalformedURLException e1) {
-                            e1.printStackTrace();
-                        }
+                        AudioClip lose = new AppletAudioClip(cl.getResource("lose.wav"));
+                        lose.play();
                         JOptionPane.showMessageDialog(null, "You lost the game!", "Sorry...", JOptionPane.PLAIN_MESSAGE);
                         timer.stop();
                     }
                 }
             }
             if ((mineAmount == cellTotal - unclickedCells) && (mineAmount == correctFlag)) {
-                try {
-                    AudioClip win = new AppletAudioClip(new URL("file:win.wav"));
-                    win.play();
-                } catch (MalformedURLException e1) {
-                    e1.printStackTrace();
-                }
+                AudioClip win = new AppletAudioClip(cl.getResource("win.wav"));
+                win.play();
                 JOptionPane.showMessageDialog(null, "You won the game!", "Congratulations!", JOptionPane.PLAIN_MESSAGE);
                 timer.stop();
 
@@ -388,6 +373,7 @@ class MineCell extends JToggleButton {
     static protected Font font;
     private int row, col, clue = 0;
     private boolean flagged, covered;
+    private ClassLoader cl = this.getClass().getClassLoader();
 
     public MineCell(int r, int c) {
         this.row = r;
@@ -404,35 +390,19 @@ class MineCell extends JToggleButton {
         setFont(font);
 
         if (mineIcon == null) {
-            try {
-                mineIcon = new ImageIcon(new URL("file:mine.gif"));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            mineIcon = new ImageIcon(cl.getResource("mine.gif"));
         }
 
         if (selectedIcon == null) {
-            try {
-                selectedIcon = new ImageIcon(new URL("file:selected.jpg"));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            selectedIcon = new ImageIcon(cl.getResource("selected.jpg"));
         }
 
         if (notSelectedIcon == null) {
-            try {
-                notSelectedIcon = new ImageIcon(new URL("file:notSelected.png"));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            notSelectedIcon = new ImageIcon(cl.getResource("notSelected.png"));
         }
 
         if (flagIcon == null) {
-            try {
-                flagIcon = new ImageIcon(new URL("file:flag.png"));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            flagIcon = new ImageIcon(cl.getResource("flag.png"));
         }
 
         setIcon(notSelectedIcon);
