@@ -1,3 +1,17 @@
+/*
+Ibrahim Ansari
+Period 7
+03/19/15
+
+Elevens Activity 1
+
+Time Spent: 8 minutes
+
+Reflection:
+I was confused at why this lab was as easy as it was. I think it is useful for code formatting and readability.
+This was a simple basic JAVA class with Attributes, Getters, and Setters. Overall a easy lab.
+ */
+
 /**
  * Card.java
  *
