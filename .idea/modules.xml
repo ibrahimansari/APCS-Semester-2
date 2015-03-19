@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/APCS-Semester-2.iml" filepath="$PROJECT_DIR$/APCS-Semester-2.iml" />
       <module fileurl="file://$PROJECT_DIR$/Classwork/Classwork.iml" filepath="$PROJECT_DIR$/Classwork/Classwork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Elevens Lab/Elevens Lab.iml" filepath="$PROJECT_DIR$/Elevens Lab/Elevens Lab.iml" />
       <module fileurl="file://$PROJECT_DIR$/Lab 17.0 QuadSorts/Lab 17.0 QuadSorts.iml" filepath="$PROJECT_DIR$/Lab 17.0 QuadSorts/Lab 17.0 QuadSorts.iml" />
       <module fileurl="file://$PROJECT_DIR$/Lab 18.1 Merge/Lab 18.1 Merge.iml" filepath="$PROJECT_DIR$/Lab 18.1 Merge/Lab 18.1 Merge.iml" />
       <module fileurl="file://$PROJECT_DIR$/Lab 19.1 Store/Lab 19.1 Store.iml" filepath="$PROJECT_DIR$/Lab 19.1 Store/Lab 19.1 Store.iml" />
