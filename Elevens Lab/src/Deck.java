@@ -1,3 +1,16 @@
+/*
+Ibrahim Ansari
+Period 7
+03/20/2015
+
+Elevens Activity 2
+
+Time Spent: 10 minutes
+
+Reflection:
+This was again a easy lab, implementing a simple Class that we talked about in class (teehee). Overall easily done.
+ */
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -30,8 +43,13 @@ public class Deck {
 	 * @param values is an array containing all of the card point values.
 	 */
 	public Deck(String[] ranks, String[] suits, int[] values) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
-	}
+        for (int i = 0; i < ranks.length; i++) {
+            Card card = new Card(ranks[i], suits[i], values[i]);
+            cards.add(card);
+        }
+        size = cards.size();
+        shuffle();
+    }
 
 
 	/**
@@ -39,7 +57,7 @@ public class Deck {
 	 * @return true if this deck is empty, false otherwise.
 	 */
 	public boolean isEmpty() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
+		return size == 0;
 	}
 
 	/**
@@ -47,7 +65,7 @@ public class Deck {
 	 * @return the number of undealt cards in this deck.
 	 */
 	public int size() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
+		return size;
 	}
 
 	/**
@@ -64,7 +82,7 @@ public class Deck {
 	 *         previously dealt.
 	 */
 	public Card deal() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
+        return cards.get(size--);
 	}
 
 	/**
