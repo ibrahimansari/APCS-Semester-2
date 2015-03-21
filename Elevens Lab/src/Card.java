@@ -1,15 +1,15 @@
 /*
-Ibrahim Ansari
-Period 7
-03/19/15
-
-Elevens Activity 1
-
-Time Spent: 8 minutes
-
-Reflection:
-I was confused at why this lab was as easy as it was. I think it is useful for code formatting and readability.
-This was a simple basic JAVA class with Attributes, Getters, and Setters. Overall a easy lab.
+ Ibrahim Ansari
+ Period 7
+ 03/19/15
+ 
+ Elevens Activity 1
+ 
+ Time Spent: 8 minutes
+ 
+ Reflection:
+ I was confused at why this lab was as easy as it was. I think it is useful for code formatting and readability.
+ This was a simple basic JAVA class with Attributes, Getters, and Setters. Overall a easy lab.
  */
 
 /**
@@ -46,9 +46,10 @@ public class Card {
 	 *                  containing the point value of the card
 	 */
 	public Card(String cardRank, String cardSuit, int cardPointValue) {
-		this.rank = cardRank;
-        this.suit = cardSuit;
-        this.pointValue = cardPointValue;
+		//initializes a new Card with the given rank, suit, and point value
+		rank = cardRank;
+		suit = cardSuit;
+		pointValue = cardPointValue;
 	}
 
 
@@ -58,7 +59,7 @@ public class Card {
 	 */
 	public String suit() {
 		return suit;
-   }
+	}
 
 	/**
 	 * Accesses this <code>Card's</code> rank.
@@ -83,7 +84,9 @@ public class Card {
 	 *         false otherwise.
 	 */
 	public boolean matches(Card otherCard) {
-        return this.rank.equals(otherCard.rank) && this.pointValue == otherCard.pointValue && this.suit.equals(otherCard.suit);
+		return otherCard.suit().equals(this.suit())
+			&& otherCard.rank().equals(this.rank())
+			&& otherCard.pointValue() == this.pointValue();
 	}
 
 	/**
@@ -98,6 +101,6 @@ public class Card {
 	 */
 	@Override
 	public String toString() {
-		return this.rank + " of " + this.suit + " (point value = " + pointValue + ")";
+		return rank + " of " + suit + " (point value = " + pointValue + ")";
 	}
 }
