@@ -86,8 +86,8 @@ public class Deck {
 	public Card deal() {
 		if (isEmpty()) 
 			return null;
-		return cards.get(size --);
-	}
+        return cards.get(--size);
+    }
 
 	/**
 	 * Generates and returns a string representation of this deck.
