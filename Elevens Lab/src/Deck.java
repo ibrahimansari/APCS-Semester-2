@@ -14,13 +14,6 @@
 import java.util.List;
 import java.util.ArrayList;
 
-/**************************************************************************
- *
- * This class is provided so you can check your work.  Please use your own
- * Deck and Card classes that you have written.
- *
- *************************************************************************/
-
 /**
  * The Deck class represents a shuffled deck of cards.
  * It provides several operations including
@@ -52,8 +45,8 @@ public class Deck {
 	public Deck(String[] ranks, String[] suits, int[] values) {
 		cards = new ArrayList<Card>();
 		for (int j = 0; j < ranks.length; j++) {
-			for (String suitString : suits) {
-				cards.add(new Card(ranks[j], suitString, values[j]));
+			for (String x : suits) {
+				cards.add(new Card(ranks[j], x, values[j]));
 			}
 		}
 		size = cards.size();
@@ -91,12 +84,9 @@ public class Deck {
 	 *         previously dealt.
 	 */
 	public Card deal() {
-		if (isEmpty()) {
+		if (isEmpty()) 
 			return null;
-		}
-		size--;
-		Card c = cards.get(size);
-		return c;
+		return cards.get(size --);
 	}
 
 	/**
