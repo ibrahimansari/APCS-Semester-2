@@ -1,3 +1,18 @@
+/*
+Ibrahim Ansari
+Period 7
+03/22/2015
+
+Elevens Lab Activity 3
+
+Time Spent: 15 minutes
+
+Reflection:
+This was a very easy lab that just required translating the given pseudo-code in the instructions into actual code.
+ */
+
+import java.util.Random;
+
 /**
  * This class provides a convenient way to test shuffling methods.
  */
@@ -12,7 +27,7 @@ public class Shuffler {
     /**
      * The number of values to shuffle.
      */
-    private static final int VALUE_COUNT = 4;
+    private static final int VALUE_COUNT = 20;
 
     /**
      * Tests shuffling methods.
@@ -62,7 +77,20 @@ public class Shuffler {
      * @param values is an array of integers simulating cards to be shuffled.
      */
     public static void perfectShuffle(int[] values) {
-        /* *** TO BE IMPLEMENTED IN ACTIVITY 3 *** */
+        int[] shuffled = new int[values.length];
+        int k = 0;
+        for (int j = 0; j < (values.length + 1) / 2; j++) {
+            shuffled[k] = values[j];
+            k += 2;
+        }
+        k = 1;
+        for (int j = (values.length + 1) / 2; j < values.length; j++) {
+            shuffled[k] = values[j];
+            k += 2;
+        }
+        for (int i = 0; i < values.length; i++) {
+            values[i] = shuffled[i];
+        }
     }
 
     /**
@@ -78,6 +106,12 @@ public class Shuffler {
      * @param values is an array of integers simulating cards to be shuffled.
      */
     public static void selectionShuffle(int[] values) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 3 *** */
+        for (int i = values.length - 1; i > 1; i--) {
+            Random ran = new Random();
+            int r = ran.nextInt(i);
+            int temp = values[r];
+            values[r] = values[i];
+            values[i] = temp;
+        }
     }
 }
